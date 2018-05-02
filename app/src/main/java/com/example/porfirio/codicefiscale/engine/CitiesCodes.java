@@ -15,6 +15,8 @@ import java.util.StringTokenizer;
 //Scarico codici delle città
 //Modifica Due
 
+//Commento di giuliano
+
 @SuppressWarnings("serial")
 public class CitiesCodes {
 	public static ArrayList<String> cities= new ArrayList<String>();
@@ -53,7 +55,7 @@ public class CitiesCodes {
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 			String s=r.readLine();
 			do {
-				s = r.readLine();
+				s = r.readLine();s = r.readLine();s = r.readLine();
 				if (s != null){
 					StringTokenizer st0 = new StringTokenizer( s, ";" );
 					if (st0.hasMoreTokens()){

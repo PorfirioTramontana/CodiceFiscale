@@ -59,10 +59,14 @@ public class MainActivity extends Activity {
                     Manifest.permission.INTERNET}, 1 );
         }
         lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-        String lat=Double.toString(lastKnownLocation.getLatitude());
-        String lon=Double.toString(lastKnownLocation.getLongitude());
-        String citta= ReverseGeocoding.getCity(lat,lon);
-
+        String lat="";
+        String lon="";
+        String citta="";
+        if (lastKnownLocation!=null) {
+            lat = Double.toString(lastKnownLocation.getLatitude());
+            lon = Double.toString(lastKnownLocation.getLongitude());
+            citta = ReverseGeocoding.getCity(lat, lon);
+        }
         final Spinner editLuogo = (Spinner) findViewById(R.id.luogoDiNascita);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
         adapter.addAll(CitiesCodes.cities);
