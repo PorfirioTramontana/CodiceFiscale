@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 //https://goo.gl/3amGB4
 //Scarico codici delle città
+//Modifica Due
 
 @SuppressWarnings("serial")
 public class CitiesCodes {
