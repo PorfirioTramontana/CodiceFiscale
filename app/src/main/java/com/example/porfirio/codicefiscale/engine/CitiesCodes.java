@@ -14,6 +14,8 @@ import java.util.StringTokenizer;
 //https://goo.gl/3amGB4
 //Scarico codici delle città
 
+//Commento di giuliano
+
 @SuppressWarnings("serial")
 public class CitiesCodes {
 	public static ArrayList<String> cities= new ArrayList<String>();
