@@ -1,5 +1,7 @@
 package com.example.porfirio.codicefiscale.engine;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,9 +55,9 @@ public class CitiesCodes {
 		try {
 			in = conn.getInputStream();
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
-			String s=r.readLine();
+			String s=r.readLine();s = r.readLine();s = r.readLine();
 			do {
-				s = r.readLine();s = r.readLine();s = r.readLine();
+				s = r.readLine();
 				if (s != null){
 					StringTokenizer st0 = new StringTokenizer( s, ";" );
 					if (st0.hasMoreTokens()){
