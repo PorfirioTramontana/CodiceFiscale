@@ -1,7 +1,5 @@
 package com.example.porfirio.codicefiscale.engine;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 //https://goo.gl/3amGB4
@@ -21,8 +20,8 @@ import java.util.StringTokenizer;
 
 @SuppressWarnings("serial")
 public class CitiesCodes {
-	public static ArrayList<String> cities= new ArrayList<String>();
-	public static ArrayList<String> codes= new ArrayList<String>();
+    public static ArrayList<Citta> cities = new ArrayList<Citta>();
+
 	
 	public CitiesCodes(){
 	//leggi via internet da https://www.istat.it/it/archivio/6789
@@ -62,11 +61,13 @@ public class CitiesCodes {
 					StringTokenizer st0 = new StringTokenizer( s, ";" );
 					if (st0.hasMoreTokens()){
 						for (int i=0;i<5;i++) st0.nextToken();
-						String citta=st0.nextToken();
-						cities.add(citta);
+                        String strCitta = st0.nextToken();
+                        Citta c = new Citta();
+                        c.nome = strCitta;
 						for (int i=0;i<11;i++) st0.nextToken();
 						String codice=st0.nextToken();
-						codes.add(codice);
+                        c.codice = codice;
+                        cities.add(c);
 					}
 					}
 			} while (s!=null);
@@ -77,6 +78,15 @@ public class CitiesCodes {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+        Comparator<Citta> comparator = new Comparator<Citta>() {
+            @Override
+            public int compare(Citta c1, Citta c2) {
+                return c1.nome.compareTo(c2.nome);
+            }
+        };
+        cities.sort(comparator);
+
 
 	}
 

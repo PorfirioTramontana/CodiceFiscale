@@ -68,9 +68,12 @@ public class MainActivity extends Activity {
             lon = Double.toString(lastKnownLocation.getLongitude());
             citta = ReverseGeocoding.getCity(lat, lon);
         }
-        final Spinner editLuogo = (Spinner) findViewById(R.id.luogoDiNascita);
+        final Spinner editLuogo = findViewById(R.id.luogoDiNascita);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
-        adapter.addAll(CitiesCodes.cities);
+
+        for (int i = 0; i < CitiesCodes.cities.size(); i++)
+            adapter.add(CitiesCodes.cities.get(i).nome);
+
         editLuogo.setAdapter(adapter);
 
         for (int i = 0; i < editLuogo.getCount(); i++) {
@@ -81,19 +84,19 @@ public class MainActivity extends Activity {
 
         editLuogo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                person.setBornCity(CitiesCodes.cities.get(pos));
+                person.setBornCity(CitiesCodes.cities.get(pos).nome);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        final EditText editNome = (EditText) findViewById(R.id.txtNome);
-        final EditText editCognome = (EditText) findViewById(R.id.txtCognome);
-        final TextView txtCodice = (TextView) findViewById(R.id.txtCodice);
+        final EditText editNome = findViewById(R.id.txtNome);
+        final EditText editCognome = findViewById(R.id.txtCognome);
+        final TextView txtCodice = findViewById(R.id.txtCodice);
 
         //TODO : Leggi l'oggetto sesso
-        final EditText btnDataDiNascita = (EditText) findViewById(R.id.dataDiNascita);
+        final EditText btnDataDiNascita = findViewById(R.id.dataDiNascita);
 
         final DatePickerDialog dpd=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -101,7 +104,7 @@ public class MainActivity extends Activity {
                 person.setDay(Integer.toString(dayOfMonth));
                 person.setMonth(Integer.toString(month+1));
                 person.setYear(Integer.toString(year));
-                btnDataDiNascita.setText(Integer.toString(dayOfMonth) + "/" + Integer.toString(month + 1) + "/" + Integer.toString(year));
+                btnDataDiNascita.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
             }
         },1980,1,1);
 
@@ -113,7 +116,7 @@ public class MainActivity extends Activity {
         });
 
 
-        final Spinner editSesso = (Spinner) findViewById(R.id.sesso);
+        final Spinner editSesso = findViewById(R.id.sesso);
         final ArrayAdapter<String> adapterSesso = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
         adapterSesso.add("M");
         adapterSesso.add("F");
@@ -128,7 +131,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button btnCalcola = (Button) findViewById(R.id.buttonCalcola);
+        Button btnCalcola = findViewById(R.id.buttonCalcola);
         btnCalcola.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);

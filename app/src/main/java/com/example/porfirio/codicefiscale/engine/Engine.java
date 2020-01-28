@@ -164,8 +164,8 @@ public class Engine {
 	
 	private String codiceCitta() {
 		for (int i = 0; i < CitiesCodes.cities.size(); i++)
-			if (CitiesCodes.cities.get(i).toString().equals(citta))
-        		return CitiesCodes.codes.get(i).toString();
+			if (CitiesCodes.cities.get(i).nome.equals(citta))
+				return CitiesCodes.cities.get(i).codice;
 		return "";
     }
 
