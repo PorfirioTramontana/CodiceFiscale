@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
         if (lastKnownLocation!=null) {
             lat = Double.toString(lastKnownLocation.getLatitude());
             lon = Double.toString(lastKnownLocation.getLongitude());
-            citta = ReverseGeocoding.getCity(lat, lon);
+            citta = ReverseGeocoding.getCity(lat, lon, cc);
         }
         final Spinner editLuogo = findViewById(R.id.luogoDiNascita);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
