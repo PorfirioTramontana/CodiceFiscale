@@ -64,7 +64,7 @@ public class CitiesCodes {
                         String strCitta = st0.nextToken();
                         Citta c = new Citta();
                         c.nome = strCitta;
-						for (int i=0;i<11;i++) st0.nextToken();
+						for (int i=0;i<12;i++) st0.nextToken();
 						String codice=st0.nextToken();
                         c.codice = codice;
                         cities.add(c);
