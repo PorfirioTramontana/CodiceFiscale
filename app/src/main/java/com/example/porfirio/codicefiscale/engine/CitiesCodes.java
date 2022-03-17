@@ -1,13 +1,13 @@
 package com.example.porfirio.codicefiscale.engine;
 
+import android.content.res.AssetManager;
+
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.StringTokenizer;
@@ -23,37 +23,9 @@ public class CitiesCodes {
     public static ArrayList<Citta> cities = new ArrayList<Citta>();
 
 	
-	public CitiesCodes(){
-	//leggi via internet da https://www.istat.it/it/archivio/6789
-	
-	//elabora via StringTokenizer il file csv 
-	//https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv
-
-		//Apre una connessione con gli orari
-		URL u = null;
+	public CitiesCodes(AssetManager assets){
 		try {
-			u = new URL("https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-		HttpURLConnection conn = null;
-		InputStream in;
-		try {
-			//conn = Connection.connect(new URL(url));
-			assert u != null;
-			conn = (HttpURLConnection) u.openConnection();
-			conn.setConnectTimeout(50000);
-		} catch (SocketTimeoutException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-
-		try {
-			in = conn.getInputStream();
-			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+			BufferedReader r = new BufferedReader(new InputStreamReader(assets.open("Elenco-comuni-italiani.csv")));
 			String s=r.readLine();s = r.readLine();s = r.readLine();
 			do {
 				s = r.readLine();

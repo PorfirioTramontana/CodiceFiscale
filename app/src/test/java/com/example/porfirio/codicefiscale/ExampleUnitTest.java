@@ -22,14 +22,14 @@ public class ExampleUnitTest {
 
     @Test
     public void provaCitta1() {
-        CitiesCodes cc = new CitiesCodes();
+        CitiesCodes cc = new CitiesCodes(getAssets());
         String s = ReverseGeocoding.getCity("40.843107", "14.226497", cc);
         assertEquals("Napoli", s);
     }
 
     @Test
     public void provaCitta2() {
-        CitiesCodes cc = new CitiesCodes();
+        CitiesCodes cc = new CitiesCodes(getAssets());
         for (int i = 30; i < 50; i += 1) {
             for (int j = 4; j < 24; j += 1) {
                 String s = ReverseGeocoding.getCity(valueOf(i), valueOf(j), cc);
