@@ -1,4 +1,4 @@
-package com.example.porfirio.codicefiscale;
+package com.example.porfirio.codicefiscale.GUI;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,15 +20,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.porfirio.codicefiscale.engine.CitiesCodes;
-import com.example.porfirio.codicefiscale.engine.Engine;
+
+import com.example.porfirio.codicefiscale.R;
+import com.example.porfirio.codicefiscale.controller.CitiesCodes;
+import com.example.porfirio.codicefiscale.controller.Engine;
 import com.example.porfirio.codicefiscale.engine.Person;
-import com.example.porfirio.codicefiscale.engine.ReverseGeocoding;
+import com.example.porfirio.codicefiscale.controller.ReverseGeocoding;
 
 // COMMENTO DI PROVA
 public class MainActivity extends Activity {
     private CitiesCodes cc;
     private Person person = new Person();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,6 @@ public class MainActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         cc = new CitiesCodes(getAssets());
-;
 
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);

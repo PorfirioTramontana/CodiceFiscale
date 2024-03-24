@@ -1,6 +1,8 @@
-package com.example.porfirio.codicefiscale.engine;
+package com.example.porfirio.codicefiscale.controller;
 
 import android.content.res.AssetManager;
+
+import com.example.porfirio.codicefiscale.engine.Citta;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
