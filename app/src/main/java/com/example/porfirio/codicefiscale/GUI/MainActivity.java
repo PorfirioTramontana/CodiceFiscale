@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.example.porfirio.codicefiscale.R;
 import com.example.porfirio.codicefiscale.controller.CitiesCodes;
 import com.example.porfirio.codicefiscale.controller.Engine;
-import com.example.porfirio.codicefiscale.engine.Person;
+import com.example.porfirio.codicefiscale.model.Person;
 import com.example.porfirio.codicefiscale.controller.ReverseGeocoding;
 
 // COMMENTO DI PROVA
@@ -38,13 +38,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //Lettura dei codici delle città da file
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        cc = new CitiesCodes(getAssets());
 
+
+        //Lettura della posizione attuale
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -66,16 +67,24 @@ public class MainActivity extends Activity {
         String lat="";
         String lon="";
         String citta="";
+        cc = new CitiesCodes(getAssets());
         if (lastKnownLocation!=null) {
             lat = Double.toString(lastKnownLocation.getLatitude());
             lon = Double.toString(lastKnownLocation.getLongitude());
             citta = ReverseGeocoding.getCity(lat, lon, cc);
         }
+
+        final EditText editNome = findViewById(R.id.txtNome);
+        final EditText editCognome = findViewById(R.id.txtCognome);
+        final TextView txtCodice = findViewById(R.id.txtCodice);
+        final Spinner editSesso = findViewById(R.id.sesso);
+        final EditText btnDataDiNascita = findViewById(R.id.dataDiNascita);
         final Spinner editLuogo = findViewById(R.id.luogoDiNascita);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
 
-        for (int i = 0; i < CitiesCodes.cities.size(); i++)
-            adapter.add(CitiesCodes.cities.get(i).nome);
+        for (int i = 0; i < cc.getCities().size(); i++)
+            adapter.add(cc.getCities().get(i).getNome());
 
         editLuogo.setAdapter(adapter);
 
@@ -87,26 +96,18 @@ public class MainActivity extends Activity {
 
         editLuogo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                person.setBornCity(CitiesCodes.cities.get(pos).nome);
+                person.setBornCity(cc.getCities().get(pos).getNome());
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        final EditText editNome = findViewById(R.id.txtNome);
-        final EditText editCognome = findViewById(R.id.txtCognome);
-        final TextView txtCodice = findViewById(R.id.txtCodice);
-
-        //TODO : Leggi l'oggetto sesso
-        final EditText btnDataDiNascita = findViewById(R.id.dataDiNascita);
 
         final DatePickerDialog dpd=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                person.setDay(Integer.toString(dayOfMonth));
-                person.setMonth(Integer.toString(month+1));
-                person.setYear(Integer.toString(year));
+                person.setData(dayOfMonth,month+1,year);
                 btnDataDiNascita.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
             }
         },1980,1,1);
@@ -119,12 +120,10 @@ public class MainActivity extends Activity {
         });
 
 
-        final Spinner editSesso = findViewById(R.id.sesso);
         final ArrayAdapter<String> adapterSesso = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item);
         adapterSesso.add("M");
         adapterSesso.add("F");
         editSesso.setAdapter(adapterSesso);
-
         editSesso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 person.setSex(adapterSesso.getItem(pos));
@@ -143,24 +142,17 @@ public class MainActivity extends Activity {
                         dialoginterface.dismiss();
                     }
                 });
-                person.setName(editNome.getText().toString());
-                person.setSurname(editCognome.getText().toString());
 
-                if (person.getName().contentEquals(""))
-                    dialog.setMessage("Nome non valido");
-                else if (person.getSurname().contentEquals(""))
-                    dialog.setMessage("Cognome non valido");
-                else if (person.getBornCity().contentEquals(""))
-                    dialog.setMessage("Luogo di nascita non valido");
-                else if (person.getDay() == 0 || person.getMonth() == 0 || person.getYear() == 0)
-                    dialog.setMessage("Data di nascita non valida");
-                else if (!person.getSex().contentEquals("M") && !person.getSex().contentEquals("F"))
-                    dialog.setMessage("Sesso non inserito");
-                else {
-                    Engine engine = null;
-                    engine = new Engine(person);
+                person.setSurname(editCognome.getText().toString());
+                person.setName(editNome.getText().toString());
+                //genere, luogo e data di nascita sono già stati settati
+                Engine engine=new Engine(person,cc);
+                String messaggio="";
+                if (engine.valida(person.getSurname(),person.getName(),person.getSex(),person.getData().getDay(),person.getData().getMonth(),person.getData().getYear(),person.getBornCity(),messaggio)) {
                     txtCodice.setText(engine.getCode());
                     dialog.setMessage(engine.getCode());
+                } else {
+                    dialog.setMessage(messaggio);
                 }
                 dialog.show();
             }

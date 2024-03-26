@@ -1,12 +1,12 @@
 package com.example.porfirio.codicefiscale.controller;
 
-import com.example.porfirio.codicefiscale.engine.Person;
+import com.example.porfirio.codicefiscale.model.Person;
 
 public class Engine {
 
 	private Person p;
 	private String code="";
-	
+
 	private String cognome="";
 	private String nome="";
 	private String sesso="";
@@ -14,32 +14,82 @@ public class Engine {
 	private int mese;
 	private int anno;
 	private String citta="";
-	
+
 	private String consonanti_COGNOME="";
 	private String vocali_COGNOME="";
 	private String consonanti_NOME="";
 	private String vocali_NOME="";
 
-	public Engine(Person person) {
-		
+	public Engine(Person person, CitiesCodes c){
+
 		this.p=person;
-		
+
 		cognome=p.getSurname().toUpperCase();
 		nome=p.getName().toUpperCase();
 		sesso=p.getSex().toUpperCase();
-		giorno=p.getDay();
-		mese=p.getMonth();
-		anno=p.getYear();
+		giorno=p.getData().getDay();
+		mese=p.getData().getMonth();
+		anno=p.getData().getYear();
 		citta=p.getBornCity();
-	
-		popolazioneStringheConsonantiVocali();
-		
-		code=codiceCognome()+codiceNome()+codiceData()+codiceCitta();
-		code+=controlCode(code);
+		String codiceCitta;
+		String messaggio="";
+
+		if (valida(cognome,nome,sesso,giorno,mese,anno,citta,messaggio)) {
+			popolazioneStringheConsonantiVocali();
+
+			code=codiceCognome()+codiceNome()+codiceData()+c.getCode(citta);
+			code+=controlCode(code);
+		}
 	}
-	
+
 	public String getCode(){
 		return code;
+	}
+
+	public boolean valida(String cognome,String nome, String sesso,int d,int m,int a,String citta,String messaggio) {
+		messaggio="";
+		if (cognome.length()<3) {
+			messaggio="Cognome non valido";
+			return false;
+		}
+		if (nome.length()<3) {
+			messaggio="Nome non valido";
+			return false;
+		}
+
+		if (!(sesso.contentEquals("M")) || (sesso.contentEquals("F")))
+		{
+			messaggio="Genere non valido";
+			return false;
+		}
+		if (citta.length()<2)
+		{
+			messaggio="Nome della citta non valido";
+			return false;
+		}
+
+		if ((d < 1) || (d > 31) || (m == 0) || (a <= 1582)) {
+			messaggio="Data non valido";
+			return false;
+		}
+
+		Boolean bisestile = (a % 4 == 0);
+
+		if (bisestile && (a % 100 == 0) && (a % 400 != 0)) {
+			bisestile = false;
+		}
+
+		if (((m == 2) && (d > 29)) || ((m == 2) && (d == 29) &&!bisestile)) {
+			messaggio="Data non valido";
+			return false;
+		}
+
+		if (((m == 4) || (m == 6) || (m == 9) || (m == 11)) && (d > 30)) {
+			messaggio="Data non valido";
+			return false;
+		}
+
+		return true;
 	}
 	
 	private String controlCode(String s) {
@@ -164,12 +214,7 @@ public class Engine {
 		return c;
 	}
 	
-	private String codiceCitta() {
-		for (int i = 0; i < CitiesCodes.cities.size(); i++)
-			if (CitiesCodes.cities.get(i).nome.equals(citta))
-				return CitiesCodes.cities.get(i).codice;
-		return "";
-    }
+
 
 	private String codiceData(){
 		String s="";

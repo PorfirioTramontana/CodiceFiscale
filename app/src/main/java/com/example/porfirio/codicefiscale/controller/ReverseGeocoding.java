@@ -63,21 +63,14 @@ public class ReverseGeocoding {
             while (i >= 0 && !ok) {
                 JSONObject city = adm.getJSONObject(i);
                 String c = (String) city.get("name");
-                for (int j = 0; j < CitiesCodes.cities.size() && !ok; j++)
-                    if (CitiesCodes.cities.get(j).nome.contentEquals(c)) {
+                for (int j = 0; j < cc.getCities().size() && !ok; j++)
+                    if (cc.getCities().get(j).getNome().contentEquals(c)) {
                         ok = true;
                         trovata = c;
                     }
                 i--;
             }
             return trovata;
-
-            //            JSONArray results=jsonObject.getJSONArray("results");
-//            JSONObject adcomp = results.getJSONObject(0);
-//            JSONArray adcomp2=adcomp.getJSONArray("address_components");
-//            JSONObject city=adcomp2.getJSONObject(2);
-//            return (String) city.get("long_name");
-
         } catch (JSONException e) {
             return "Roma";
         }

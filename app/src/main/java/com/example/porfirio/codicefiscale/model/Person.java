@@ -1,12 +1,10 @@
-package com.example.porfirio.codicefiscale.engine;
+package com.example.porfirio.codicefiscale.model;
 
 public class Person {
 	
 	private String surname="";
 	private String name="";
-	private int d;
-	private int m;
-	private int y;
+	private Data d;
 	private String c_born="";
 	private String s=""; // TRUE -> M      FALSE -> F
 	
@@ -19,17 +17,11 @@ public class Person {
 	public void setName(String s){
 		this.name=s;
 	}
-	
-	public void setDay(String d){
-		this.d=Integer.parseInt(d);
-	}
-	
-	public void setMonth(String d){
-		this.m=Integer.parseInt(d);
-	}
-	
-	public void setYear(String d){
-		this.y=Integer.parseInt(d);
+
+	public void setData(int giorno,int mese,int anno) {
+		d = new Data(giorno, mese, anno);
+		if (!d.valida())
+				throw new IllegalArgumentException("Data non valida");
 	}
 	
 	public void setBornCity(String s){
@@ -52,20 +44,11 @@ public class Person {
 		return c_born;
 	}
 	
-	public int getDay(){
-		return d;
-	}
-	
-	public int getMonth(){
-		return m;
-	}
-	
-	public int getYear(){
-		return y;
-	}
-	
 	public String getSex(){
 		return s;
 	}
-	
+
+	public Data getData() {
+		return d;
+	}
 }
