@@ -10,10 +10,12 @@ public class Engine {
 	private String cognome="";
 	private String nome="";
 	private String sesso="";
-	private int giorno;
-	private int mese;
-	private int anno;
+	private int giorno=1;
+	private int mese=1;
+	private int anno=2001;
 	private String citta="";
+
+	private String messaggio="";
 
 	private String consonanti_COGNOME="";
 	private String vocali_COGNOME="";
@@ -32,9 +34,9 @@ public class Engine {
 		anno=p.getData().getYear();
 		citta=p.getBornCity();
 		String codiceCitta;
-		String messaggio="";
+		String m=null;
 
-		if (valida(cognome,nome,sesso,giorno,mese,anno,citta,messaggio)) {
+		if (valida(cognome,nome,sesso,giorno,mese,anno,citta)) {
 			popolazioneStringheConsonantiVocali();
 
 			code=codiceCognome()+codiceNome()+codiceData()+c.getCode(citta);
@@ -46,8 +48,7 @@ public class Engine {
 		return code;
 	}
 
-	public boolean valida(String cognome,String nome, String sesso,int d,int m,int a,String citta,String messaggio) {
-		messaggio="";
+	public boolean valida(String cognome,String nome, String sesso,int d,int m,int a,String citta) {
 		if (cognome.length()<3) {
 			messaggio="Cognome non valido";
 			return false;
@@ -314,5 +315,8 @@ public class Engine {
 	private boolean isVocal(char c){
 		return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
 	}
-	
+
+	public String getMessaggio() {
+		return messaggio;
+	}
 }

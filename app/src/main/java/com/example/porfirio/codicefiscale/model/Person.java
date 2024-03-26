@@ -4,7 +4,7 @@ public class Person {
 	
 	private String surname="";
 	private String name="";
-	private Data d;
+	private Data d=new Data(0,0,0);
 	private String c_born="";
 	private String s=""; // TRUE -> M      FALSE -> F
 	
@@ -19,7 +19,9 @@ public class Person {
 	}
 
 	public void setData(int giorno,int mese,int anno) {
-		d = new Data(giorno, mese, anno);
+		d.setDay(giorno);
+		d.setMonth(mese);
+		d.setYear(anno);
 		if (!d.valida())
 				throw new IllegalArgumentException("Data non valida");
 	}

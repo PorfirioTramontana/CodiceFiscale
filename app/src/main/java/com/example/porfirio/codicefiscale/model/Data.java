@@ -44,4 +44,14 @@ public Data(Integer d, Integer m, Integer a) {
 	public int getYear() {
 		return a;
 	}
+
+    public void setDay(int giorno) {
+        d = giorno;
+    }
+    public void setMonth(int mese) {
+        m = mese;
+    }
+    public void setYear(int anno) {
+        a = anno;
+    }
 }

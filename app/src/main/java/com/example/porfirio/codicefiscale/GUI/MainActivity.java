@@ -147,12 +147,12 @@ public class MainActivity extends Activity {
                 person.setName(editNome.getText().toString());
                 //genere, luogo e data di nascita sono già stati settati
                 Engine engine=new Engine(person,cc);
-                String messaggio="";
-                if (engine.valida(person.getSurname(),person.getName(),person.getSex(),person.getData().getDay(),person.getData().getMonth(),person.getData().getYear(),person.getBornCity(),messaggio)) {
+                String messaggio=new String("");
+                if (engine.valida(person.getSurname(),person.getName(),person.getSex(),person.getData().getDay(),person.getData().getMonth(),person.getData().getYear(),person.getBornCity())) {
                     txtCodice.setText(engine.getCode());
                     dialog.setMessage(engine.getCode());
                 } else {
-                    dialog.setMessage(messaggio);
+                    dialog.setMessage(engine.getMessaggio());
                 }
                 dialog.show();
             }
